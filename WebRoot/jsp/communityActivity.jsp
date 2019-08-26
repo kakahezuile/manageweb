@@ -1,0 +1,39 @@
+<%@page import="com.xj.utils.PropertyTool"%>
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+Properties properties = PropertyTool.getPropertites("/configure.properties");
+	String versionNum = properties.getProperty("version");
+%>
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <base href="<%=basePath%>">
+    
+    <title>My JSP 'communityActivity.jsp' starting page</title>
+    
+	<meta http-equiv="pragma" content="no-cache">
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="expires" content="0">    
+	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+	<meta http-equiv="description" content="This is my page">
+	<!--
+	<link rel="stylesheet" type="text/css" href="styles.css">
+	-->
+	<script type="text/javascript" src="${pageContext.request.contextPath }/easymob-webim1.0/jquery-1.11.1.js?version=<%=versionNum %>"></script>
+	<script type="text/javascript">
+	$(function(){
+		
+	});
+	
+	</script>
+  </head>
+  
+  <body>
+    <div>
+    	<a href="javascript:void(0);">小区服务管理</a>
+    </div>
+  </body>
+</html>

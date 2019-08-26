@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xj.stat.sqlmap.mapper.UsersMapper" >
+  <resultMap id="BaseResultMap" type="com.xj.stat.po.Users" >
+    <id column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="emob_id" property="emobId" jdbcType="CHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="nickname" property="nickname" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="gender" property="gender" jdbcType="CHAR" />
+    <result column="age" property="age" jdbcType="TINYINT" />
+    <result column="avatar" property="avatar" jdbcType="VARCHAR" />
+    <result column="idcard" property="idcard" jdbcType="VARCHAR" />
+    <result column="idnumber" property="idnumber" jdbcType="CHAR" />
+    <result column="status" property="status" jdbcType="CHAR" />
+    <result column="room" property="room" jdbcType="CHAR" />
+    <result column="create_time" property="createTime" jdbcType="INTEGER" />
+    <result column="salt" property="salt" jdbcType="VARCHAR" />
+    <result column="role" property="role" jdbcType="CHAR" />
+    <result column="community_id" property="communityId" jdbcType="INTEGER" />
+    <result column="signature" property="signature" jdbcType="VARCHAR" />
+    <result column="user_floor" property="userFloor" jdbcType="VARCHAR" />
+    <result column="user_unit" property="userUnit" jdbcType="VARCHAR" />
+    <result column="client_id" property="clientId" jdbcType="VARCHAR" />
+    <result column="equipment" property="equipment" jdbcType="VARCHAR" />
+    <result column="character_values" property="characterValues" jdbcType="INTEGER" />
+    <result column="equipment_version" property="equipmentVersion" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    user_id, username, emob_id, password, nickname, phone, gender, age, avatar, idcard, 
+    idnumber, status, room, create_time, salt, role, community_id, signature, user_floor, 
+    user_unit, client_id, equipment, character_values, equipment_version
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from users
+    where user_id = #{userId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from users
+    where user_id = #{userId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.xj.stat.po.Users" >
+    insert into users (user_id, username, emob_id, 
+      password, nickname, phone, 
+      gender, age, avatar, idcard, 
+      idnumber, status, room, create_time, 
+      salt, role, community_id, 
+      signature, user_floor, user_unit, 
+      client_id, equipment, character_values, 
+      equipment_version)
+    values (#{userId,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{emobId,jdbcType=CHAR}, 
+      #{password,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{gender,jdbcType=CHAR}, #{age,jdbcType=TINYINT}, #{avatar,jdbcType=VARCHAR}, #{idcard,jdbcType=VARCHAR}, 
+      #{idnumber,jdbcType=CHAR}, #{status,jdbcType=CHAR}, #{room,jdbcType=CHAR}, #{createTime,jdbcType=INTEGER}, 
+      #{salt,jdbcType=VARCHAR}, #{role,jdbcType=CHAR}, #{communityId,jdbcType=INTEGER}, 
+      #{signature,jdbcType=VARCHAR}, #{userFloor,jdbcType=VARCHAR}, #{userUnit,jdbcType=VARCHAR}, 
+      #{clientId,jdbcType=VARCHAR}, #{equipment,jdbcType=VARCHAR}, #{characterValues,jdbcType=INTEGER}, 
+      #{equipmentVersion,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xj.stat.po.Users" >
+    insert into users
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="username != null" >
+        username,
+      </if>
+      <if test="emobId != null" >
+        emob_id,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="nickname != null" >
+        nickname,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="gender != null" >
+        gender,
+      </if>
+      <if test="age != null" >
+        age,
+      </if>
+      <if test="avatar != null" >
+        avatar,
+      </if>
+      <if test="idcard != null" >
+        idcard,
+      </if>
+      <if test="idnumber != null" >
+        idnumber,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="room != null" >
+        room,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="salt != null" >
+        salt,
+      </if>
+      <if test="role != null" >
+        role,
+      </if>
+      <if test="communityId != null" >
+        community_id,
+      </if>
+      <if test="signature != null" >
+        signature,
+      </if>
+      <if test="userFloor != null" >
+        user_floor,
+      </if>
+      <if test="userUnit != null" >
+        user_unit,
+      </if>
+      <if test="clientId != null" >
+        client_id,
+      </if>
+      <if test="equipment != null" >
+        equipment,
+      </if>
+      <if test="characterValues != null" >
+        character_values,
+      </if>
+      <if test="equipmentVersion != null" >
+        equipment_version,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="emobId != null" >
+        #{emobId,jdbcType=CHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="nickname != null" >
+        #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        #{gender,jdbcType=CHAR},
+      </if>
+      <if test="age != null" >
+        #{age,jdbcType=TINYINT},
+      </if>
+      <if test="avatar != null" >
+        #{avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="idcard != null" >
+        #{idcard,jdbcType=VARCHAR},
+      </if>
+      <if test="idnumber != null" >
+        #{idnumber,jdbcType=CHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="room != null" >
+        #{room,jdbcType=CHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=INTEGER},
+      </if>
+      <if test="salt != null" >
+        #{salt,jdbcType=VARCHAR},
+      </if>
+      <if test="role != null" >
+        #{role,jdbcType=CHAR},
+      </if>
+      <if test="communityId != null" >
+        #{communityId,jdbcType=INTEGER},
+      </if>
+      <if test="signature != null" >
+        #{signature,jdbcType=VARCHAR},
+      </if>
+      <if test="userFloor != null" >
+        #{userFloor,jdbcType=VARCHAR},
+      </if>
+      <if test="userUnit != null" >
+        #{userUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="clientId != null" >
+        #{clientId,jdbcType=VARCHAR},
+      </if>
+      <if test="equipment != null" >
+        #{equipment,jdbcType=VARCHAR},
+      </if>
+      <if test="characterValues != null" >
+        #{characterValues,jdbcType=INTEGER},
+      </if>
+      <if test="equipmentVersion != null" >
+        #{equipmentVersion,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xj.stat.po.Users" >
+    update users
+    <set >
+      <if test="username != null" >
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="emobId != null" >
+        emob_id = #{emobId,jdbcType=CHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="nickname != null" >
+        nickname = #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        gender = #{gender,jdbcType=CHAR},
+      </if>
+      <if test="age != null" >
+        age = #{age,jdbcType=TINYINT},
+      </if>
+      <if test="avatar != null" >
+        avatar = #{avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="idcard != null" >
+        idcard = #{idcard,jdbcType=VARCHAR},
+      </if>
+      <if test="idnumber != null" >
+        idnumber = #{idnumber,jdbcType=CHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=CHAR},
+      </if>
+      <if test="room != null" >
+        room = #{room,jdbcType=CHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=INTEGER},
+      </if>
+      <if test="salt != null" >
+        salt = #{salt,jdbcType=VARCHAR},
+      </if>
+      <if test="role != null" >
+        role = #{role,jdbcType=CHAR},
+      </if>
+      <if test="communityId != null" >
+        community_id = #{communityId,jdbcType=INTEGER},
+      </if>
+      <if test="signature != null" >
+        signature = #{signature,jdbcType=VARCHAR},
+      </if>
+      <if test="userFloor != null" >
+        user_floor = #{userFloor,jdbcType=VARCHAR},
+      </if>
+      <if test="userUnit != null" >
+        user_unit = #{userUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="clientId != null" >
+        client_id = #{clientId,jdbcType=VARCHAR},
+      </if>
+      <if test="equipment != null" >
+        equipment = #{equipment,jdbcType=VARCHAR},
+      </if>
+      <if test="characterValues != null" >
+        character_values = #{characterValues,jdbcType=INTEGER},
+      </if>
+      <if test="equipmentVersion != null" >
+        equipment_version = #{equipmentVersion,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xj.stat.po.Users" >
+    update users
+    set username = #{username,jdbcType=VARCHAR},
+      emob_id = #{emobId,jdbcType=CHAR},
+      password = #{password,jdbcType=VARCHAR},
+      nickname = #{nickname,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      gender = #{gender,jdbcType=CHAR},
+      age = #{age,jdbcType=TINYINT},
+      avatar = #{avatar,jdbcType=VARCHAR},
+      idcard = #{idcard,jdbcType=VARCHAR},
+      idnumber = #{idnumber,jdbcType=CHAR},
+      status = #{status,jdbcType=CHAR},
+      room = #{room,jdbcType=CHAR},
+      create_time = #{createTime,jdbcType=INTEGER},
+      salt = #{salt,jdbcType=VARCHAR},
+      role = #{role,jdbcType=CHAR},
+      community_id = #{communityId,jdbcType=INTEGER},
+      signature = #{signature,jdbcType=VARCHAR},
+      user_floor = #{userFloor,jdbcType=VARCHAR},
+      user_unit = #{userUnit,jdbcType=VARCHAR},
+      client_id = #{clientId,jdbcType=VARCHAR},
+      equipment = #{equipment,jdbcType=VARCHAR},
+      character_values = #{characterValues,jdbcType=INTEGER},
+      equipment_version = #{equipmentVersion,jdbcType=VARCHAR}
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+  
+  <select id="getUsers" resultMap="BaseResultMap"  parameterType="string">
+  	select * from users u WHERE u.emob_id = #{emob_id} and u.username is not null  AND u.test=0
+  </select>
+  
+   <select id="getUsersByArray" resultMap="BaseResultMap" parameterType="hashmap"  >
+  	SELECT * from users u WHERE  u.emob_id in 
+  	<foreach collection="array" item="#{map.srt}" index="index"
+            open="(" close=")" separator=",">
+            #{emob_id}
+    </foreach>
+  	 and u.community_id = #{communityId} and u.create_time>1433088000 and u.role = 'owner' and u.username is not NULL AND u.test=0
+  </select>
+  
+  
+  <select id="getUsersByArrayWithVisitor" resultType="string">
+  	SELECT u.emob_id from users u WHERE  u.emob_id in 
+  	<foreach collection="array" item="emob_id" index="index"
+            open="(" close=")" separator=",">
+            #{emob_id}
+    </foreach>
+  	 and u.community_id = 3 and u.create_time>1433088000 and u.role = 'owner' AND u.test=0
+  </select>
+  
+  
+  <select id="findUsersByCommunityId" parameterType="int"  resultMap="BaseResultMap">
+  	SELECT * from users u where u.community_id = #{id}  and u.role = 'owner' AND u.test=0
+  </select>
+  
+  
+  <select id="findUsersByCommunityIdWithNull" parameterType="int"  resultMap="BaseResultMap">
+  	SELECT * from users u where u.community_id = #{id} and u.create_time>1433088000 and u.role = 'owner' AND u.test=0
+  </select>
+  
+  
+  <select id="findAllInstallUserIdByCommunity" parameterType="int" resultType="string">
+  	SELECT u.emob_id from users u where  u.community_id = #{id} and u.role = 'owner'  AND u.test=0 ;
+  </select>
+  
+  <select id="findAllInstallUserIdByCommunityAndTime" parameterType="map" resultType="int">
+  SELECT count(1) from users u where  u.community_id = #{communityId} and u.create_time BETWEEN 1433088000 AND #{endDay}  and u.role = 'owner'  AND u.test=0
+  </select>
+  
+  <select id="findAllRegisService" parameterType="int" resultType="string">
+  	SELECT u.emob_id from users u where  u.community_id = #{id} and u.role = 'owner' and u.username IS NOT NULL  AND u.test=0;
+  </select>
+  
+  <select id="findAllRegisServiceByCommunityAndTime" parameterType="map" resultType="int">
+  	SELECT count(1) from users u where  u.community_id = #{communityId} and u.create_time > 1433088000 
+  	AND CASE WHEN u.register_time IS NULL THEN u.create_time &lt;  #{endDay} WHEN u.register_time IS NOT NULL THEN u.register_time &lt;  #{endDay} END  
+  	and u.role = 'owner' and u.username IS NOT NULL AND u.test=0 ;
+  </select>
+  
+  <!-- 获取指定小区指定时间内安装用户 -->
+  <select id="getInstallActiveUsers" parameterType="map" resultType="string">
+  		SELECT u.emob_id from users u WHERE  u.emob_id in 
+  		<foreach collection="emobId" item="emob_id" index="index"
+            open="(" close=")" separator=",">
+            #{emob_id}
+    	</foreach>
+  	 and u.community_id = #{communityId}  and u.role = 'owner' and u.create_time BETWEEN 1433088000 AND #{endDay} 
+  </select>
+  
+  <!-- 获取指定小区，指定时间内注册用户 -->
+   <select id="getRegisterActiveUsers" parameterType="map" resultType="string">
+  		SELECT u.emob_id from users u WHERE  u.emob_id in 
+  		<foreach collection="emobId" item="emob_id" index="index"
+            open="(" close=")" separator=",">
+            #{emob_id}
+    	</foreach>
+  	 and u.community_id = #{communityId}  and u.role = 'owner'  and u.username is not NULL 
+  	  AND  CASE WHEN u.register_time IS NULL THEN u.create_time &lt;  #{endDay} WHEN u.register_time IS NOT NULL THEN u.register_time &lt;  #{endDay} END 
+  </select>
+  
+  <select id="findUserByIds" resultMap="BaseResultMap" >
+ 	SELECT * from users u WHERE  u.test=0 AND u.emob_id in 
+  	<foreach collection="list" item="emob_id" index="index"
+            open="(" close=")" separator=",">
+            #{emob_id}
+    </foreach>
+  </select>
+  
+  <select id="getAllTest" parameterType="int" resultType="string">
+  	SELECT u.emob_id from users u where  u.community_id = #{id} and u.role = 'owner'  AND u.test!=0 ;
+  </select>
+  
+</mapper>

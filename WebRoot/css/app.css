@@ -1,0 +1,529 @@
+@charset "utf-8";
+
+body{
+	background:#fff;
+}
+.content{
+	padding:1px 20px;
+	background:#f7f7f7;
+}
+.service-notice_title{
+	/*margin-top:20px;
+	font-size:18px;
+	color:#333;	
+*/
+	border-bottom: 1px solid #d6d6d6;
+    color: #333;
+    font-size: 20px;
+    margin-top: 20px;
+    padding-bottom: 5px;
+}
+.service-notice-item{
+	padding-left:10px;
+	font-size:14px;
+}
+
+.service-notice_title b{
+	background: none repeat scroll 0 0 #04a9f4;
+    display: inline-block;
+    height: 18px;
+    margin-right: 6px;
+    position: relative;
+    top: 3px;
+    width: 3px;
+}
+.service-notice-item p{
+	margin:10px 0;
+}
+.service-notice-price{
+	color:#ff6600;
+}
+.service-notice_declare{
+	line-height:22px;	
+	padding-left:10px;
+	margin-top:10px;
+	font-size:14px;
+}
+.service-notice_declare p{
+	margin:10px 0;
+}
+.shop_help_title{
+	margin-top:20px;
+	font-size:18px;
+	color:#333;	
+	padding-bottom:5px;
+	border-bottom:1px solid #d6d6d6;
+}
+.shop_help-item{
+	padding-left:10px;
+	font-size:14px;
+}
+.shop_help-item a{
+	color:#ff8500;
+}
+.shop_help_title b{
+	background: none repeat scroll 0 0 #4caf50;
+    display: inline-block;
+    height: 18px;
+    margin-right: 6px;
+    position: relative;
+    top: 1px;
+    width: 3px;
+}
+.shop_help-item p{
+	margin:10px 0;
+}
+.shop_help-price{
+	color:#ff6600;
+}
+.shop_help_declare{
+	line-height:22px;	
+	padding-left:30px;
+	margin-top:10px;
+	font-size:14px;
+}
+.donwload-bg{
+	position:fixed;
+	z-index:-1;
+	width:100%;
+	background-size:cover;
+	margin:0 auto;
+	overflow:hidden;
+}
+.download-title{
+	margin:0 auto;
+	padding-top:10px;
+	text-align:left;
+	padding-left:20px;
+}
+.download-title img{
+	vertical-align:middle;
+	width:66px;
+	
+}
+.download{
+	margin:0 auto;
+	text-align:center;
+	position:fixed;
+	bottom:0px;
+	width:100%;
+	background:#fff;
+	padding:3px 0;
+}
+.download a{
+	display:block;
+	color:#fff;
+	font-size:18px;
+	text-align:center;
+	border-radius:3px; 
+	padding:14px 60px;
+	margin:0 16px;
+	background:#ff9600;
+}
+.download p.other a{
+	color: #fff;
+    font-size:18px;
+    height: 62px;
+    line-height: 62px;
+    padding:0 20px 0 25px;
+    text-align: center;
+    border-radius: 31px;
+    display:inline-block;
+    width:204px;
+}
+.download a img{
+	width:115px;
+}
+.download p{
+	margin:30px 0;
+	text-align:center;
+}
+.download a.android{
+	background:#34c083;;
+}
+.download a.ios{
+	background:#333333;
+
+}
+.download a.ios-future{
+	background:#d6d6d6;
+    opacity:0.8;
+	cursor:default;
+}
+.download a.android:hover{
+	background:#46c990;
+}
+.download a.ios:hover{
+	background:#464646;
+}
+.download a.android-shop{
+	background:#ff8500;
+	border-radius: 26px;
+    height: 52px;
+}
+.download a.ios-shop{
+	background: #ff8500 none repeat scroll 0 0;
+    border-radius: 26px;
+    height: 52px;
+
+}
+.download a.android-shop:hover, .download a.ios-shop:hover{
+	background:#f5840a;
+}
+.download a span{
+	padding:5px 0 5px 30px;
+}
+.download a.android span{
+	background:url("../images/app/android.png") 0 2px no-repeat;
+}
+
+.download a.ios span, .download a.ios-future span{
+	background:url("../images/app/ios.png") 0 1px no-repeat;
+}
+.download a.android-shop span{
+	background:url("../images/app/android.png") 0 2px no-repeat;
+}
+
+.download a.ios-shop span{
+	background:url("../images/app/ios.png") 0 1px no-repeat;
+}
+.tip-content img{
+	height:26px;
+	margin-top:-2px;
+	border-radius:2px;
+	border:1px solid #283032;
+	vertical-align:middle;
+}
+.tip-content img.safari{
+	border:none;
+}
+.blank-bg{
+	position:fixed;
+	width:100%;
+	height:100%;
+	top:0;
+	z-index:30;
+	background:url("../images/app/bg-blank-90.png") repeat;
+}
+.tip-word{
+	position:absolute;
+	z-index:31;
+	top:0;
+	left:0;
+	width:100%;
+}
+.tip-img{
+	float:right;
+	clear:both;
+	padding:10px 18px 0;
+}
+.tip-img img{
+	height:120px;
+}
+.tip-content{
+	clear: both;
+    color: #fff;
+    float: left;
+    font-size: 18px;
+    line-height: 40px;
+    padding: 0 15px;
+}
+.tip-title{
+    color: #626262;
+    text-align:center;
+}
+.tip-title img{
+	width:100%;
+	display:block;
+	margin-bottom:3px;
+}
+.slogan{
+	text-align:center;
+	margin-top:11px;
+	margin-bottom:24px;
+}
+.slogan img{
+	width:235px;
+}
+.tip-second-title{
+	clear: both;
+    color: #626262;
+    font-size: 18px;
+    text-align:center;
+}
+.bg-pic{
+	/*background:url("../images/app/download.jpg") no-repeat center #fff;*/ 
+	position:fixed;
+	top:0;
+	width:100%;
+	height:100%;
+	z-index:21;
+	left:0;
+	z-index:-1;
+}
+.download-img{
+	margin-bottom:65px;
+}
+.download-img img{
+	width:100%;
+}
+.bg-pic img{
+	width:100%;
+	height:100%;
+}
+.content-padding{
+	background:#f7f7f7;
+	padding:0 5px;
+}
+.agreement-content p, .shop-content p{
+	text-indent: 2em;
+	line-height:22px;
+}
+.agreement-content p.title{
+	text-indent: 2em;
+	font-weight:bold;
+}
+.shop-content p.title{
+	text-indent: 2em;
+	font-weight:bold;
+	text-align:center;
+}
+.agreement-content p span.bg-color{
+	background:#a6dba8;
+}
+.agreement-content p b i.bg-color-i{
+	font-weight: normal;
+}
+.download-bg{
+	position:fixed;
+	width:100%;
+	z-index:-1;
+}
+.download-bg img{
+	display:block;
+	width:100%;
+	background-size:cover;
+}
+.download-img img{
+	margin:0 auto;
+}
+/***********    app  content     ************/
+
+.content-app{
+	padding:15px;
+}
+.item-content, .content-app p{
+	font-size:16px;
+	line-height:26px;
+	color:3e3e3e;
+	font-size:16px;
+	word-wrap:break-word;
+}
+.item-title{
+	font-weight:bold;
+	padding:15px 0;
+	font-size:20px;
+}
+.company-box{
+	position:relative;
+}
+.company-box img{
+	display:block;
+	width:100%;
+	background-size:cover;
+}
+.company-box p.company-name{
+	bottom: 0;
+    color: #fff;
+    font-size: 16px;
+    position: absolute;
+    text-align: center;
+    width:100%;
+    height:100%;
+    background:url("../images/public/bg-blank-40.png") repeat;
+}
+.company-box p.company-name:hover{
+	background:none;
+}
+.example-body{
+	background:#4cb050;
+	padding-top:10px;
+	padding-bottom:15px;
+}
+.example-title{
+	color:#fff;
+	margin-bottom:10px;
+	padding:0 10px;
+	font-size:16px;
+}
+.example-content{
+	color:#fff;
+	padding:0 10px 10px;
+	font-size:14px;
+	line-height:20px;
+}
+.example-img{
+	position:relative;
+}
+.example-img img{
+	width:100%;
+	display:block;
+}
+.looknumber{
+	position:absolute;
+	background:url("../images/public/bg-blank-40.png") repeat;	
+	display:inline-block;
+	right:0;
+	top:0;
+	padding:10px 20px;
+	color:#fff;
+}
+.residue{
+	position:absolute;
+	width:100%;
+	bottom:0;
+	padding:10px 0px;
+	color:#fff;
+	background:url("../images/public/bg-blank-40.png") repeat;
+}
+.lost-time{
+	background:#fff;
+	color:#333;
+	text-align:center;
+	padding:10px 0;
+	font-size:15px;
+	border-radius:5px 5px 0 0;
+}
+.lost-time span{
+	color:#ff6634;
+}
+.shopping-num{
+	margin-left:10px;
+}
+.shopping-num b{
+	font-size:18px;
+	font-weight:normal;
+	margin:0 3px;
+}
+.surplus-num{
+	position:absolute;
+	right:10px;
+}
+.surplus-num b{
+	font-size:18px;
+	color:#ff6634;
+	font-weight:normal;
+	margin:0 3px;
+}
+.example-detail{
+	background:#fff;
+	border-radius:0 0 5px 5px;
+}
+.purchase{
+	border:1px solid #ff6634;
+	width:130px;
+	height:40px;
+	margin-left:10px;
+}
+.purchase span{
+	width:40px;
+	height:40px;
+	line-height:40px;
+	text-align:center;
+	display:inline-block;
+}
+.purchase span.add{
+	background:url("../images/app/add.png") no-repeat 4px 4px;
+}
+.purchase span.sub{
+	background:url("../images/app/sub.png") no-repeat 7px 5px;
+}
+.purchase-number{
+	display:inline-block;
+	border-left:1px solid #ff6634;
+	border-right:1px solid #ff6634;
+	height:40px;
+	line-height:40px;
+	font-size:17px;
+}
+.purchase-box{
+	position:relative;
+	padding:15px 0;
+}
+.purchase-btn{
+	position:absolute;
+	right:10px;
+	background:#ff6634;
+	color:#fff;
+	width:100px;
+	height:40px;
+	line-height:40px;
+	text-align:center;
+	top:16px;
+	border-radius:4px;
+	font-size:14px;
+}
+.example-open-time{
+	border-top:1px solid #ededed;
+	border-bottom:1px solid #ededed;
+	padding:15px 0 15px 10px;
+	font-size:14px;
+	color:#595959;
+}
+.example-phone{
+	background: rgba(0, 0, 0, 0) url("../images/app/phone.png") no-repeat scroll 9px 9px;
+    border-bottom: 1px solid #ededed;
+    padding: 15px 0 15px 35px;
+    font-size:14px;
+    position:relative;
+    color:#323232;
+}
+.example-place{
+	background: rgba(0, 0, 0, 0) url("../images/app/place.png") no-repeat scroll 9px 9px;
+    border-bottom: 1px solid #ededed;
+    padding: 15px 0 15px 35px;
+    font-size:14px;
+    position:relative;
+    color:#323232;
+    border-radius:0 0 5px 5px;
+    box-shadow:2px 2px 4px #429745;
+}
+.example-place b, .example-phone b{
+	position:absolute;
+	right:3px;
+	padding:10px;
+	background:url("../images/app/arrow.png") no-repeat;
+}
+/***********    privilege.jsp     ************/
+.privilege{
+	padding:0 12px;
+	
+}
+.b-title{
+	color:#2fcc71;
+	font-size:19px;
+	padding:9px 0;
+	border-bottom:1px solid #eee;
+}
+.s-title{
+	color:#2fcc71;
+	font-size:15px;
+	padding:9px 0 3px;
+	border-bottom:1px solid #eee;
+}
+.b-sub-title{
+	font-size:15px;
+	color:#32383d;
+	padding:4px 0;
+	font-weight:bold;
+}
+.b-content{
+	font-size:15px;
+	color:#32383d;
+	line-height:26px;
+}
+
+
+
+
+

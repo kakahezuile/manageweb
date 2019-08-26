@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xj.stat.sqlmap.mapper.TryOutMapper" >
+  <resultMap id="BaseResultMap" type="com.xj.stat.po.TryOut" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="emob_id" property="emobId" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="users_id" property="usersId" jdbcType="INTEGER" />
+    <result column="community_id" property="communityId" jdbcType="INTEGER" />
+  </resultMap>
+  
+  
+   <resultMap id="UserResultMap" type="com.xj.bean.Users" >
+    <id column="userId" property="userId" jdbcType="INTEGER" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="emobId" property="emobId" jdbcType="VARCHAR" />
+    <result column="nickname" property="nickname" jdbcType="VARCHAR" />
+    <result column="avatar" property="avatar" jdbcType="VARCHAR" />
+    <result column="userFloor" property="userFloor" jdbcType="VARCHAR" />
+    <result column="userUnit" property="userUnit" jdbcType="VARCHAR" />
+    <result column="characterValues" property="characterValues" jdbcType="INTEGER" />
+    <result column="gender" property="gender" jdbcType="VARCHAR" />
+    <result column="signature" property="signature" jdbcType="VARCHAR" />
+    <result column="role" property="role" jdbcType="VARCHAR" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="communityName" property="communityName" jdbcType="VARCHAR" />
+    <result column="community_id" property="communityId" jdbcType="INTEGER" />
+    <result column="lifecircleCount" property="lifecircleCount" jdbcType="INTEGER" />
+  </resultMap>
+  
+   <resultMap id="navyMap" type="com.xj.bean.Users" >
+    <id column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="emob_id" property="emobId" jdbcType="VARCHAR" />
+    <result column="nickname" property="nickname" jdbcType="VARCHAR" />
+    <result column="avatar" property="avatar" jdbcType="VARCHAR" />
+    <result column="user_floor" property="userFloor" jdbcType="VARCHAR" />
+    <result column="user_unit" property="userUnit" jdbcType="VARCHAR" />
+    <result column="room" property="room" jdbcType="VARCHAR" />
+    <result column="gender" property="gender" jdbcType="VARCHAR" />
+    <result column="signature" property="signature" jdbcType="VARCHAR" />
+    <result column="community_id" property="communityId" jdbcType="INTEGER" />
+  </resultMap>
+  
+  
+  
+    <resultMap id="lifeCircleResultMap" type="com.xj.bean.LifeCircle" >
+    <id column="lifeCircleId" property="lifeCircleId" jdbcType="INTEGER" />
+    <id column="communityId" property="communityId" jdbcType="INTEGER" />
+    <result column="lifeContent" property="lifeContent" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="praiseSum" property="praiseSum" jdbcType="INTEGER" />
+    <result column="contentSum" property="contentSum" jdbcType="INTEGER" />
+    <result column="time" property="time" jdbcType="VARCHAR" />
+  	</resultMap>
+  
+  
+  <sql id="Base_Column_List" >
+    id, type, emob_id, status, users_id,community_id
+  </sql>
+  
+  <insert id="insert" parameterType="com.xj.stat.po.TryOut" >
+    insert into try_out (id, type, emob_id, 
+      status, users_id)
+    values (#{id,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{emobId,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR}, #{usersId,jdbcType=INTEGER})
+  </insert>
+  
+  <insert id="insertSelective" parameterType="com.xj.stat.po.TryOut" >
+    insert into try_out
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="emobId != null" >
+        emob_id,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="usersId != null" >
+        users_id,
+      </if>
+      <if test="usersId != null" >
+        community_Id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="emobId != null" >
+        #{emobId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="usersId != null" >
+        #{usersId,jdbcType=INTEGER},
+      </if>
+      <if test="usersId != null" >
+        #{communityId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  
+  <select id="queryAll" resultMap="BaseResultMap">
+  	SELECT * FROM try_out
+  </select>
+  <select id="selectTryOut" parameterType="int" resultType="string">
+  	SELECT  emob_id FROM try_out WHERE community_id=#{communityId}
+  </select>
+  
+  <select id="getTryOutByEmobIds" resultType="string">
+ 	SELECT u.emob_id from try_out u WHERE u.emob_id in
+  	<foreach collection="array" item="emob_id" index="index"
+            open="(" close=")" separator=",">
+            #{emob_id}
+    </foreach>
+  </select>
+  
+  <select id="getTryOuts" resultMap="UserResultMap" parameterType="map" >
+ 	SELECT
+ 	u.emob_id emobId,
+ 	u.community_id communityId,
+ 	u.username,
+	u.nickname,
+	u.avatar,
+	u.gender,
+	u.user_floor userFloor,
+	u.user_unit userUnit,
+	u.room,
+	u.role,
+	u.gender,
+	u.character_values characterValues,
+	u.signature,
+	c.community_name communityName,
+	t.remarks,
+	count(life_circle_id) lifecircleCount
+	FROM
+	users u
+	INNER JOIN try_out t ON u.emob_id = t.emob_id
+	INNER JOIN communities c ON u.community_id = c.community_id
+	LEFT JOIN life_circle l ON l.emob_id = u.emob_id
+	WHERE u.role='owner'
+	<if test="communityId != 0">
+	AND u.community_id = #{communityId}
+	</if>
+	GROUP BY u.emob_id ORDER BY lifecircleCount DESC LIMIT #{start},#{size}
+  </select>
+  
+  <select id="searchNavy" resultMap="UserResultMap" parameterType="string" >
+ 	SELECT
+ 	u.emob_id emobId,
+ 	u.username,
+	u.nickname,
+	u.avatar,
+	u.gender,
+	u.user_floor userFloor,
+	u.user_unit userUnit,
+	u.room,
+	u.role,
+	u.gender,
+	u.character_values characterValues,
+	u.signature,
+	c.community_name communityName,
+	t.remarks,
+	count(life_circle_id) lifecircleCount
+	FROM
+	users u
+	INNER JOIN try_out t ON u.emob_id = t.emob_id
+	INNER JOIN communities c ON u.community_id = c.community_id
+	LEFT JOIN life_circle l ON l.emob_id = u.emob_id
+	WHERE  (u.username like  CONCAT('%',#{query},'%')  OR u.nickname like CONCAT('%',#{query},'%')) AND u.role='owner'
+	GROUP BY u.emob_id ORDER BY lifecircleCount DESC 
+  </select>
+
+
+  <select id="getLifeCircles" resultMap="lifeCircleResultMap" parameterType="string" >
+ 	SELECT
+	l.life_circle_id lifeCircleId,
+	l.community_id communityId,
+	l.type,
+	l.life_content lifeContent,
+	l.praise_sum praiseSum,
+	l.content_sum contentSum,
+	FROM_UNIXTIME( l.create_time, '%Y-%c-%e %T') time
+	FROM
+	life_circle l
+	WHERE
+	l.emob_id = #{emobId}
+	ORDER BY l.create_time DESC LIMIT  #{start},#{size}
+  </select>
+  
+ <select id="getTryOutNum" resultType="int" parameterType="map" >
+ 	SELECT
+ 	count(u.emob_id)
+	FROM
+	users u
+	INNER JOIN try_out t ON u.emob_id = t.emob_id
+	INNER JOIN communities c ON u.community_id = c.community_id
+	<if test="communityId != 0">
+	WHERE u.community_id = #{communityId}
+	</if>
+  </select>
+  
+  <select id="getLifeCirclesSum" resultType="int" parameterType="map" >
+ 	SELECT
+	count(1)
+	FROM
+	life_circle l
+	WHERE
+	l.emob_id = #{emobId}
+  </select>
+  
+  <select id="getNavyByEmobId" resultMap="navyMap" parameterType="map" >
+ 	SELECT username,user_id, emob_id, nickname, avatar, user_floor, user_unit, room, gender, signature, community_id FROM users WHERE emob_id = #{emobId}
+  </select>
+  
+</mapper>

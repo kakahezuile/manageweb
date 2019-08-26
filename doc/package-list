@@ -1,0 +1,16 @@
+com.xj
+com.xj.annotation
+com.xj.base
+com.xj.bean
+com.xj.comm
+com.xj.dao
+com.xj.exception
+com.xj.filter
+com.xj.httpclient.apidemo
+com.xj.httpclient.utils
+com.xj.httpclient.vo
+com.xj.impl
+com.xj.listeners
+com.xj.service
+com.xj.test
+com.xj.utils

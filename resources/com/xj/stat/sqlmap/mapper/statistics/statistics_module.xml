@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xj.stat.sqlmap.mapper.statistics.statistics_module" >
+  <resultMap id="BaseResultMap" type="com.xj.stat.po.StatisticsModule" >
+    <id column="statistics_module_id" property="statisticsUserId" jdbcType="INTEGER" />
+    <result column="emob_id" property="emobId" jdbcType="VARCHAR" />
+    <result column="click" property="click" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="statistics_time" property="statisticsTime" jdbcType="INTEGER" />
+    <result column="community_id" property="communityId" jdbcType="INTEGER" />
+  </resultMap>
+  
+  
+  <resultMap id="ClickMobule" type="com.xj.stat.bean.resource.ClickMobule" >
+    <result column="emob_id" property="emobId" jdbcType="VARCHAR" />
+    <result column="cilck" property="cilck" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    statistics_module_id, emob_id, click, type, statistics_time,community_id
+  </sql>
+  <insert id="insert" parameterType="com.xj.stat.po.StatisticsModule" >
+    insert into statistics_module (emob_id, click,type,statistics_time,community_id)
+    values (#{emobId,jdbcType=VARCHAR},#{click,jdbcType=INTEGER}, #{type,jdbcType=INTEGER},#{statisticsTime,jdbcType=INTEGER},#{communityId,jdbcType=INTEGER})
+  </insert>
+  
+   <select id="selectUserEmob" parameterType="com.xj.stat.bean.parameter.BeanUtil"   resultType="string">
+        SELECT
+			s.emob_id
+		FROM
+			statistics_module s 
+		WHERE
+		
+	  s.statistics_time 	BETWEEN  #{startTime} AND #{endTime}-1
+		AND s.community_id =#{communityId} 
+		GROUP BY
+			s.emob_id
+  </select>
+   <select id="statisticsModuleNum" parameterType="com.xj.stat.bean.parameter.BeanUtil"   resultMap="ClickMobule">
+        SELECT
+			s.emob_id,s.click,s.type
+		FROM
+			statistics_module s 
+		WHERE
+		
+	    s.statistics_time 
+	    	
+	   BETWEEN  #{startTime} AND #{endTime}-1
+		AND s.community_id =#{communityId} 
+		
+  </select>
+  
+</mapper>

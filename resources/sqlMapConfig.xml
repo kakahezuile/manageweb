@@ -1,0 +1,18 @@
+<!DOCTYPE configuration
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	
+	<mappers>
+		<mapper resource="com/xj/stat/sqlmap/mapper/TryOutMapper.xml"/>
+		<mapper resource="com/xj/stat/sqlmap/mapper/UsersMapper.xml"/>
+		<mapper resource="com/xj/stat/sqlmap/mapper/BulletinMapper.xml"/>
+		<mapper resource="com/xj/stat/sqlmap/mapper/statistics/statistics_time.xml"/>
+		<mapper resource="com/xj/stat/sqlmap/mapper/statistics/statistics_user.xml"/>
+		<mapper resource="com/xj/stat/sqlmap/mapper/statistics/statistics_module.xml"/>
+		<mapper resource="com/xj/stat/sqlmap/mapper/nearby/crazy_sales.xml"/>
+		<mapper resource="com/xj/stat/sqlmap/mapper/welfare/WelfareStatics.xml"/>
+	</mappers>
+
+</configuration>

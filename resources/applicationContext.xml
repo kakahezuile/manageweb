@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+		http://www.springframework.org/schema/aop
+		http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+	<context:annotation-config />
+	<context:component-scan base-package="com.xj" />
+
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<value>classpath:jdbc.properties</value>
+		</property>
+	</bean>
+
+	<!-- 出于对性能的考虑，在生产环境中，不要开启filter -->
+	<bean id="stat-filter" class="com.alibaba.druid.filter.stat.StatFilter">
+		<property name="mergeSql" value="true" />
+		<property name="slowSqlMillis" value="1500" />
+		<property name="logSlowSql" value="true" />
+	</bean>
+
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+		<property name="url" value="${xj.url}" />
+		<property name="username" value="${xj.username}" />
+		<property name="password" value="${xj.password}" />
+
+		<property name="filters" value="log4j" />
+		<!-- 配置监控统计拦截的filters -->
+		<property name="proxyFilters">
+			<list>
+				<ref bean="stat-filter" />
+			</list>
+		</property>
+
+		<!-- 配置初始化连接数量 -->
+		<property name="initialSize" value="20" />
+		<!-- 配置最小连接数量 -->
+		<property name="minIdle" value="20" />
+		<!-- 配置最大连接数量 -->
+		<property name="maxActive" value="300" />
+		<!-- 配置获取连接等待超时的时间 -->
+		<property name="maxWait" value="60000" />
+		<!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+		<property name="timeBetweenEvictionRunsMillis" value="60000" />
+		<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+		<property name="minEvictableIdleTimeMillis" value="300000" />
+		<!-- 验证连接是否可用的sql -->
+		<property name="validationQuery" value="SELECT 'x'" />
+		<!-- 开启连接在空闲时间测试连接是否可用 -->
+		<property name="testWhileIdle" value="true" />
+		<!-- 关闭获取连接时测试连接是否可用 -->
+		<property name="testOnBorrow" value="false" />
+		<!-- 关闭将连接归还连接池时测试连接是否可用 -->
+		<property name="testOnReturn" value="false" />
+		<!-- 关闭PSCache，mysql不建议开启 -->
+		<property name="poolPreparedStatements" value="false" />
+	</bean>
+
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate" p:dataSource-ref="dataSource" />
+
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager" p:dataSource-ref="dataSource" />
+
+	<tx:advice id="transactionAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="*" propagation="REQUIRED" />
+		</tx:attributes>
+	</tx:advice>
+
+	<aop:config>
+		<aop:pointcut expression="execution(* com.xj.service.*.*(..))" id="allManagerMethod" />
+		<aop:advisor advice-ref="transactionAdvice" pointcut-ref="allManagerMethod" />
+	</aop:config>
+
+	<!-- spring和mybatis整合的配置 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"></property>
+		<property name="configLocation" value="classpath:sqlMapConfig.xml"></property>
+	</bean>
+
+	<!-- 定时任务 -->
+	<!-- 消息转存 -->
+	<bean id="messageTransfer" class="com.xj.timer.MessageTransfer" />
+	<bean id="messageTransferJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="messageTransfer" />
+		<property name="targetMethod" value="execute" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="messageTransferTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="messageTransferJobDetail" />
+		<property name="cronExpression" value="0 0/10 * * * ?" /><!-- 每10分钟执行一次 -->
+	</bean>
+	
+	<!-- 消息推送 -->
+	<bean id="messagePush" class="com.xj.timer.MessagePush" />
+	<bean id="messagePushJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="messagePush" />
+		<property name="targetMethod" value="execute" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="messagePushTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="messagePushJobDetail" />
+		<property name="cronExpression" value="0 0/30 * * * ?" /><!-- 每30分钟执行一次 -->
+	</bean>
+	
+	<!-- 模块点击量统计 -->
+	<bean id="moduleClickStatistics" class="com.xj.timer.ModuleClickStatistics" />
+	<bean id="moduleClickStatisticsJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="moduleClickStatistics" />
+		<property name="targetMethod" value="execute" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="moduleClickStatisticsTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="moduleClickStatisticsJobDetail" />
+		<property name="cronExpression" value="0 0 1 * * ?" /><!-- 每天夜里一点开始执行 -->
+	</bean>
+	
+	<!-- 用户点击量统计 -->
+	<bean id="userClickStatistics" class="com.xj.timer.UserClickStatistics" />
+	<bean id="userClickStatisticsJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="userClickStatistics" />
+		<property name="targetMethod" value="execute" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="userClickStatisticsTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="userClickStatisticsJobDetail" />
+		<property name="cronExpression" value="0 0 1 * * ?" /><!-- 每天夜里一点开始执行 -->
+	</bean>
+	
+	<!-- 用户活跃统计 -->
+	<bean id="userLivenessStatistics" class="com.xj.timer.UserLivenessStatistics" />
+	<bean id="userLivenessStatisticsJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="userLivenessStatistics" />
+		<property name="targetMethod" value="execute" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="userLivenessStatisticsTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="userLivenessStatisticsJobDetail" />
+		<property name="cronExpression" value="0 0 1 * * ?" /><!-- 每天夜里一点开始执行 -->
+	</bean>
+	
+	<!-- 生活圈敏感词扫描 -->
+	<bean id="senstitiveLifeScan" class="com.xj.timer.SenstitiveLifeScan" />
+	<bean id="senstitiveLifeScanJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="senstitiveLifeScan" />
+		<property name="targetMethod" value="execute" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="senstitiveLifeScanTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="senstitiveLifeScanJobDetail" />
+		<property name="cronExpression" value="0 0/10 * * * ?" /><!-- 每10分钟执行一次 -->
+	</bean>
+	
+	<!-- 每月帮主竞选结果公示 -->
+	<bean id="bangzhuMonthCampaign" class="com.xj.timer.ElectionPerMonth" />
+	<bean id="bangzhuMonthCampaignJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="bangzhuMonthCampaign" />
+		<property name="targetMethod" value="execute" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="bangzhuMonthCampaignTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="bangzhuMonthCampaignJobDetail" />
+		<property name="cronExpression" value="0 0 12 2 * ?" /><!-- 每月二号中午十二点开始执行 -->
+	</bean>
+	
+	<!-- 帮主竞选开始 -->
+	<bean id="bangzhuMonthCampaignStart" class="com.xj.timer.ElectionPerMonth" />
+	<bean id="bangzhuMonthCampaignJobStart" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="bangzhuMonthCampaignStart" />
+		<property name="targetMethod" value="startMessage" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="bangzhuMonthCampaignStartTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="bangzhuMonthCampaignJobStart" />
+		<property name="cronExpression" value="0 0 12 15 * ?" /><!-- 每月十五号中午十二点开始执行 -->
+	</bean>
+	
+	<!-- 每日一周新上周边店家会员卡排序 -->
+	<bean id="shopVipcardWeekOrder" class="com.xj.timer.ShopVipcardWeekOrder" />
+	<bean id="shopVipcardWeekOrderJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="shopVipcardWeekOrder" />
+		<property name="targetMethod" value="execute" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="shopVipcardWeekOrderTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="shopVipcardWeekOrderJobDetail" />
+		<property name="cronExpression" value="0 0 4 * * ?" /><!-- 每天夜里四点开始执行 -->
+	</bean>
+	
+	<!---->
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="messageTransferTrigger" />
+				<!-- <ref bean="messagePushTrigger" />  -->
+				<ref bean="moduleClickStatisticsTrigger" />
+				<ref bean="userClickStatisticsTrigger" />
+				<ref bean="userLivenessStatisticsTrigger" />
+				<ref bean="senstitiveLifeScanTrigger" />
+				<ref bean="bangzhuMonthCampaignTrigger" />
+				<ref bean="bangzhuMonthCampaignStartTrigger" />
+				<ref bean="shopVipcardWeekOrderTrigger" />
+			</list>
+		</property>
+	</bean>
+	
+</beans>

@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xj.stat.sqlmap.mapper.liveness" >
+  <resultMap id="BaseResultMap" type="com.xj.stat.po.Liveness" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="today" property="today" jdbcType="INTEGER" />
+    <result column="yesterday" property="yesterday" jdbcType="INTEGER" />
+    <result column="week" property="week" jdbcType="INTEGER" />
+    <result column="last_week" property="last_week" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, today, yesterday, week, last_week
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from users
+    where user_id = #{userId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from users
+    where user_id = #{userId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.xj.stat.po.Liveness" >
+    insert into liveness (today, yesterday, week, 
+      last_week)
+    values (#{today,jdbcType=INTEGER}, #{yesterday,jdbcType=VARCHAR}, #{week,jdbcType=CHAR}, 
+      #{last_week,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xj.stat.po.Liveness" >
+    insert into liveness
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="today != null" >
+        today,
+      </if>
+      <if test="yesterday != null" >
+        yesterday,
+      </if>
+      
+      <if test="week != null" >
+        week,
+      </if>
+      <if test="last_week != null" >
+        last_week,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="today != null" >
+        #{today,jdbcType=INTEGER},
+      </if>
+      <if test="yesterday != null" >
+        #{yesterday,jdbcType=VARCHAR},
+      </if>
+     
+      <if test="week != null" >
+        #{week,jdbcType=VARCHAR},
+      </if>
+       <if test="last_week != null" >
+        #{last_week,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xj.stat.po.Users" >
+    update users
+    <set >
+      <if test="username != null" >
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="emobId != null" >
+        emob_id = #{emobId,jdbcType=CHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="nickname != null" >
+        nickname = #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        gender = #{gender,jdbcType=CHAR},
+      </if>
+      <if test="age != null" >
+        age = #{age,jdbcType=TINYINT},
+      </if>
+      <if test="avatar != null" >
+        avatar = #{avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="idcard != null" >
+        idcard = #{idcard,jdbcType=VARCHAR},
+      </if>
+      <if test="idnumber != null" >
+        idnumber = #{idnumber,jdbcType=CHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=CHAR},
+      </if>
+      <if test="room != null" >
+        room = #{room,jdbcType=CHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=INTEGER},
+      </if>
+      <if test="salt != null" >
+        salt = #{salt,jdbcType=VARCHAR},
+      </if>
+      <if test="role != null" >
+        role = #{role,jdbcType=CHAR},
+      </if>
+      <if test="communityId != null" >
+        community_id = #{communityId,jdbcType=INTEGER},
+      </if>
+      <if test="signature != null" >
+        signature = #{signature,jdbcType=VARCHAR},
+      </if>
+      <if test="userFloor != null" >
+        user_floor = #{userFloor,jdbcType=VARCHAR},
+      </if>
+      <if test="userUnit != null" >
+        user_unit = #{userUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="clientId != null" >
+        client_id = #{clientId,jdbcType=VARCHAR},
+      </if>
+      <if test="equipment != null" >
+        equipment = #{equipment,jdbcType=VARCHAR},
+      </if>
+      <if test="characterValues != null" >
+        character_values = #{characterValues,jdbcType=INTEGER},
+      </if>
+      <if test="equipmentVersion != null" >
+        equipment_version = #{equipmentVersion,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xj.stat.po.Users" >
+    update users
+    set username = #{username,jdbcType=VARCHAR},
+      emob_id = #{emobId,jdbcType=CHAR},
+      password = #{password,jdbcType=VARCHAR},
+      nickname = #{nickname,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      gender = #{gender,jdbcType=CHAR},
+      age = #{age,jdbcType=TINYINT},
+      avatar = #{avatar,jdbcType=VARCHAR},
+      idcard = #{idcard,jdbcType=VARCHAR},
+      idnumber = #{idnumber,jdbcType=CHAR},
+      status = #{status,jdbcType=CHAR},
+      room = #{room,jdbcType=CHAR},
+      create_time = #{createTime,jdbcType=INTEGER},
+      salt = #{salt,jdbcType=VARCHAR},
+      role = #{role,jdbcType=CHAR},
+      community_id = #{communityId,jdbcType=INTEGER},
+      signature = #{signature,jdbcType=VARCHAR},
+      user_floor = #{userFloor,jdbcType=VARCHAR},
+      user_unit = #{userUnit,jdbcType=VARCHAR},
+      client_id = #{clientId,jdbcType=VARCHAR},
+      equipment = #{equipment,jdbcType=VARCHAR},
+      character_values = #{characterValues,jdbcType=INTEGER},
+      equipment_version = #{equipmentVersion,jdbcType=VARCHAR}
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+  
+  <select id="getUsers" resultMap="BaseResultMap"  parameterType="string">
+  	select * from users u WHERE u.emob_id = #{emob_id} and u.username is not null 
+  </select>
+  
+   <select id="getUsersByArray" resultMap="BaseResultMap" parameterType="hashmap"  >
+  	SELECT * from users u WHERE  u.emob_id in 
+  	<foreach collection="array" item="#{map.srt}" index="index"
+            open="(" close=")" separator=",">
+            #{emob_id}
+    </foreach>
+  	 and u.community_id = #{communityId} and u.create_time>1433088000 and u.role = 'owner' and u.username is not NULL
+  </select>
+  
+  
+  <select id="getUsersByArrayWithVisitor" resultType="string">
+  	SELECT u.emob_id from users u WHERE  u.emob_id in 
+  	<foreach collection="array" item="emob_id" index="index"
+            open="(" close=")" separator=",">
+            #{emob_id}
+    </foreach>
+  	 and u.community_id = 3 and u.create_time>1433088000 and u.role = 'owner'
+  </select>
+  
+  
+  <select id="findUsersByCommunityId" parameterType="int"  resultMap="BaseResultMap">
+  	SELECT * from users u where u.community_id = #{id} and u.create_time>1433088000 and u.role = 'owner'
+  </select>
+  
+  
+  <select id="findUsersByCommunityIdWithNull" parameterType="int"  resultMap="BaseResultMap">
+  	SELECT * from users u where u.community_id = #{id} and u.create_time>1433088000 and u.role = 'owner'
+  </select>
+  
+  
+  <select id="findAllInstallUserIdByCommunity" parameterType="int" resultType="string">
+  	SELECT u.emob_id from users u where  u.community_id = #{id} and u.role = 'owner'  AND u.emob_id NOT in (select  t.emob_id from try_out t );
+  </select>
+  
+  <select id="findAllInstallUserIdByCommunityAndTime" parameterType="map" resultType="int">
+  SELECT count(1) from users u where  u.community_id = #{communityId} and u.create_time BETWEEN 1433088000 AND #{endDay}  and u.role = 'owner'  AND u.emob_id NOT in (select  t.emob_id from try_out t )
+  </select>
+  
+  <select id="findAllRegisService" parameterType="int" resultType="string">
+  	SELECT u.emob_id from users u where  u.community_id = #{id} and u.role = 'owner' and u.username IS NOT NULL  AND u.emob_id NOT in (select  t.emob_id from try_out t );
+  </select>
+  
+  <select id="findAllRegisServiceByCommunityAndTime" parameterType="map" resultType="int">
+  	SELECT count(1) from users u where  u.community_id = #{communityId} and u.create_time BETWEEN 1433088000 AND #{endDay} and u.role = 'owner' and u.username IS NOT NULL  AND u.emob_id NOT in (select  t.emob_id from try_out t );
+  </select>
+  
+  
+  
+  
+</mapper>

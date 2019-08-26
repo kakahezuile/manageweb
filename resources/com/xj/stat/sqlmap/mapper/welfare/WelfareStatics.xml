@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xj.stat.sqlmap.mapper.WelfareStaticsMapper" >
+  <resultMap id="BaseResultMap" type="com.xj.bean.welfare.Welfare" >
+    <id column="welfare_id" property="welfareId" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="poster" property="poster" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="charactervalues" property="charactervalues" jdbcType="INTEGER" />
+    <result column="total" property="total" jdbcType="INTEGER" />
+    <result column="rule" property="rule" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="CHAR" />
+    <result column="end_time" property="endTime" jdbcType="INTEGER" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="create_time" property="createTime" jdbcType="INTEGER" />
+    <result column="modify_time" property="modifyTime" jdbcType="INTEGER" />
+    <result column="reason" property="reason" jdbcType="VARCHAR" />
+    <result column="remain" property="remain" jdbcType="INTEGER" />
+    <result column="provide_instruction" property="provideInstruction" jdbcType="VARCHAR" />
+    <result column="community_id" property="communityId" jdbcType="INTEGER" />
+    <result column="start_time" property="startTime" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="WelfareStatics" type="com.xj.stat.bean.resource.WelfareStatics">
+		<result column="buy_num" property="buyNum" jdbcType="VARCHAR" />
+  </resultMap>
+  
+   <resultMap id="WelfareStaticsDetail" type="com.xj.stat.bean.resource.WelfareStatics">
+		<result column="welfare_id" property="welfareId" jdbcType="INTEGER" />
+		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="start_time" property="startTime" jdbcType="INTEGER" />
+		<result column="end_time" property="endTime" jdbcType="INTEGER" />
+		<result column="price" property="price" jdbcType="DECIMAL" />
+		<result column="totalPrice" property="totalPrice" jdbcType="DECIMAL" />
+		<result column="totalBonusCoinCount" property="totalBonusCoinCount" jdbcType="INTEGER" />
+		<result column="status" property="status" jdbcType="CHAR" />
+		<result column="buy_num" property="buyNum" jdbcType="VARCHAR" />
+  </resultMap>
+  
+    <resultMap id="WelfareOrdersDetail" type="com.xj.stat.bean.resource.WelfareStatics">
+		<result column="phone" property="phone" jdbcType="VARCHAR" />
+		<result column="nickName" property="nickName" jdbcType="VARCHAR" />
+		<result column="totalPrice" property="totalPrice" jdbcType="DECIMAL" />
+		<result column="totalBonusCoinCount" property="totalBonusCoinCount" jdbcType="INTEGER" />
+		<result column="buyTime" property="buyTime" jdbcType="INTEGER" />
+		<result column="bill_channel" property="billChannel" jdbcType="VARCHAR" />
+		<result column="trade_type" property="tradeType" jdbcType="VARCHAR" />
+		<result column="trade_no" property="tradeNo" jdbcType="VARCHAR" />
+		<result column="code" property="code" jdbcType="VARCHAR" />
+ 	</resultMap>
+ 	
+ 	 <resultMap id="WelfareInfo" type="com.xj.stat.bean.resource.WelfareStatics">
+		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="CHAR" />
+ 	</resultMap>
+ 	
+ 	 <resultMap id="WelfareUserInfo" type="com.xj.stat.bean.resource.WelfareStatics">
+		<result column="nickname" property="nickName" jdbcType="VARCHAR" />
+		<result column="username" property="phone" jdbcType="VARCHAR" />
+		<result column="adress" property="adress" jdbcType="VARCHAR" />
+		<result column="emob_id" property="emobId" jdbcType="VARCHAR" />
+ 	</resultMap>
+  
+  
+  <select id="currentTimeRangeStatistics" parameterType="com.xj.stat.bean.parameter.CurrentTimeRange" resultMap="WelfareStatics">
+		SELECT
+			COUNT(w.welfare_order_id) AS buy_num
+		FROM welfare_order w
+		WHERE
+			w.community_id=#{communityId}
+			AND w.create_time BETWEEN #{todayBegin} AND #{todayEnd}
+
+		UNION ALL
+
+		SELECT
+			COUNT(w.welfare_order_id) AS buy_num
+		FROM welfare_order w
+		WHERE
+			w.community_id=#{communityId}
+			AND w.create_time BETWEEN #{thisWeekBegin} AND #{thisWeekEnd}
+
+		UNION ALL
+
+		SELECT
+			COUNT(w.welfare_order_id) AS buy_num
+		FROM welfare_order w
+		WHERE
+			w.community_id=#{communityId}
+			AND w.create_time BETWEEN #{thisMonthBegin} AND #{thisMonthEnd}
+	</select>
+	
+  	<select id="statistics" parameterType="com.xj.stat.bean.parameter.BeanUtil" resultMap="WelfareStatics">
+		SELECT
+			COUNT(w.welfare_order_id) AS buy_num
+		FROM welfare_order w
+		WHERE
+			w.community_id=#{communityId}
+			AND w.create_time BETWEEN #{startTime} AND #{endTime}
+	</select>
+	
+  	<select id="getAllWelfareStatics" parameterType="Map" resultMap="WelfareStaticsDetail">
+		SELECT w.welfare_id, w.title, w.start_time, w.end_time, w.price, w.`status`, SUM(o.money) totalPrice, SUM(o.bonus_coin) totalBonusCoinCount,
+		COUNT(o.welfare_order_id) buy_num FROM  welfare w  INNER JOIN welfare_order o ON o.welfare_id = w.welfare_id
+		WHERE w.community_id = ${communityId } AND o.`status` = 'paid' AND w.`status` !='delete' GROUP BY w.welfare_id  LIMIT ${start },${pageSize } 
+	</select>
+	
+  	<select id="getWelfareOrdersDetail" parameterType="Map" resultMap="WelfareOrdersDetail">
+		SELECT DISTINCT u.nickname nickName,u.username phone,o.money totalPrice,o.bonus_coin totalBonusCoinCount,o.create_time buyTime,b.bill_channel,b.trade_type,b.trade_no,o.`code` FROM 
+		welfare_order o INNER JOIN users u ON u.emob_id = o.emob_id LEFT  JOIN xj_bill b ON o.serial = b.bill_channel  WHERE o.welfare_id = ${welfareId} LIMIT ${start },${pageSize } 
+	</select>
+	
+	
+  	<select id="getWelfareInfo"  resultMap="WelfareInfo">
+		SELECT title,`status` FROM welfare WHERE welfare_id = #{welfareId }
+	</select>
+	
+  	<select id="getwelfareBuys"  resultMap="WelfareOrdersDetail">
+		SELECT DISTINCT u.nickname nickName,u.username phone,o.money totalPrice,o.bonus_coin totalBonusCoinCount,o.create_time buyTime ,b.bill_channel,b.trade_type,b.trade_no,o.`code`  FROM 
+		welfare_order o INNER JOIN users u ON u.emob_id = o.emob_id LEFT  JOIN xj_bill b ON o.serial = b.bill_channel
+		WHERE o.community_id = ${communityId } AND  o.create_time BETWEEN ${startTime } AND ${endTime } ORDER BY o.create_time   LIMIT ${start },${pageSize }
+	</select>
+	
+  	<select id="getClickUserDetailDay"  resultMap="WelfareUserInfo">
+		SELECT emob_id, nickname,username,CONCAT(user_floor,user_unit,room) adress FROM users WHERE emob_id NOT in (SELECT emob_id FROM try_out) AND emob_id in 
+	  	<foreach collection="array" item="emobId" index="index"
+	            open="(" close=")" separator=",">
+	            #{emobId}
+	    </foreach>
+	</select>
+	
+  
+</mapper>

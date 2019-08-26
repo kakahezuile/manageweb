@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xj.stat.sqlmap.mapper.statistics.statistics_time" >
+  <resultMap id="BaseResultMap" type="com.xj.stat.po.StatisticsTime" >
+    <id column="statistics_time_id" property="statisticsTimeId" jdbcType="INTEGER" />
+    <result column="statistics_user_time" property="statisticsUserTime" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    statistics_time_id, statistics_user_time, type
+  </sql>
+  <insert id="insertStatisticsTime" parameterType="com.xj.stat.po.StatisticsTime" >
+    insert into statistics_time ( statistics_user_time, type)
+    values (#{statisticsUserTime,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR})
+  </insert>
+  <select id="selectStatisticsTime"  resultMap="BaseResultMap">
+  	SELECT * FROM statistics_time WHERE type='user' ORDER BY statistics_time_id DESC
+  </select>
+  <select id="selectStatisticsTimeType" parameterType="string"  resultMap="BaseResultMap">
+  	SELECT * FROM statistics_time WHERE type=#{type} ORDER BY statistics_time_id DESC
+  </select>
+</mapper>

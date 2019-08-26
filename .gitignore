@@ -1,0 +1,10 @@
+.idea
+*.iml
+.settings
+*.classpath
+*.mymetadata
+*.myumldata
+*.project
+ceshi
+MyTokenFile
+*.pdf

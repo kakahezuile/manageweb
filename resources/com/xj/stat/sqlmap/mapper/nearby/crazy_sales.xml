@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xj.stat.sqlmap.mapper.nearby.crazy_sales">
+	<resultMap id="BaseResultMap" type="com.xj.stat.po.CrazySales">
+		<id column="crazy_sales_id" property="crazySalesId" jdbcType="INTEGER" />
+		<result column="emob_id" property="emobId" jdbcType="VARCHAR" />
+		<result column="total" property="total" jdbcType="INTEGER" />
+		<result column="per_limit" property="perLimit" jdbcType="INTEGER" />
+		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="INTEGER" />
+		<result column="end_time" property="endTime" jdbcType="INTEGER" />
+		<result column="descr" property="descr" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="VARCHAR" />
+		<result column="remain" property="remain" jdbcType="INTEGER" />
+		<result column="icon" property="icon" jdbcType="VARCHAR" />
+	</resultMap>
+	<resultMap id="CrazySalesShop" type="com.xj.stat.bean.resource.nearby.CrazySalesShop">
+		<id column="crazy_sales_id" property="crazySalesId" jdbcType="INTEGER" />
+		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="INTEGER" />
+		<result column="end_time" property="endTime" jdbcType="INTEGER" />
+		<result column="descr" property="descr" jdbcType="VARCHAR" />
+		<result column="shop_name" property="shopName" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="VARCHAR" />
+	</resultMap>
+	<resultMap id="CrazySalesStatistics" type="com.xj.stat.bean.resource.nearby.CrazySalesStatistics">
+		<result column="buy_num" property="buyNum" jdbcType="VARCHAR" />
+		<result column="user_num" property="userNum" jdbcType="VARCHAR" />
+		<result column="use_num" property="useNum" jdbcType="VARCHAR" />
+	</resultMap>
+	<resultMap id="CrazySalesImg" type="com.xj.stat.bean.resource.nearby.CrazySalesImg">
+		<id column="crazy_sales_id" property="crazySalesId" jdbcType="INTEGER" />
+		<result column="emob_id" property="emobId" jdbcType="VARCHAR" />
+		<result column="total" property="total" jdbcType="INTEGER" />
+		<result column="per_limit" property="perLimit" jdbcType="INTEGER" />
+		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="INTEGER" />
+		<result column="end_time" property="endTime" jdbcType="INTEGER" />
+		<result column="descr" property="descr" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="VARCHAR" />
+		<result column="remain" property="remain" jdbcType="INTEGER" />
+		<result column="icon" property="icon" jdbcType="VARCHAR" />
+		<result column="img_url" property="imgUrl" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		crazy_sales_id, emob_id, per_limit, title, create_time, end_time, descr, status,remain,icon
+	</sql>
+	<select id="selectNearbyCrazySalesShop" parameterType="com.xj.stat.bean.parameter.nearby.CrazySales" resultMap="CrazySalesShop">
+		SELECT
+		c.crazy_sales_id,c.create_time,c.end_time,c.title,c.descr,s.shop_name,c.status
+		FROM crazy_sales c LEFT JOIN shops s ON c.emob_id=s.emob_id
+		LEFT JOIN crazy_sales_community cs ON cs.crazy_sales_id=c.crazy_sales_id
+		WHERE c.status!='delete' AND
+		cs.community_id=#{communityId,jdbcType=INTEGER}
+		AND ( c.title LIKE #{title,jdbcType=VARCHAR}
+		OR c.descr LIKE #{descr,jdbcType=VARCHAR})
+	</select>
+	<select id="statistics" parameterType="com.xj.stat.bean.parameter.BeanUtil" resultMap="CrazySalesStatistics">
+		SELECT
+			COUNT(c.crazy_sales_user_id) AS buy_num,
+			COUNT(DISTINCT c.user_emob_id,c.user_emob_id) AS user_num,
+			(
+				SELECT COUNT(cc.crazy_sales_user_id) FROM crazy_sales_user cc WHERE cc.community_id=#{communityId,jdbcType=INTEGER} AND cc.use_time BETWEEN #{startTime,jdbcType=INTEGER} AND #{endTime,jdbcType=INTEGER}
+			) AS use_num
+		FROM crazy_sales_user c
+		WHERE
+			c.community_id=#{communityId,jdbcType=INTEGER}
+			AND c.create_time BETWEEN #{startTime,jdbcType=INTEGER} AND #{endTime,jdbcType=INTEGER}
+	</select>
+	<select id="currentTimeRangeStatistics" parameterType="com.xj.stat.bean.parameter.CurrentTimeRange" resultMap="CrazySalesStatistics">
+		SELECT
+			COUNT(c.crazy_sales_user_id) AS buy_num,
+			COUNT(DISTINCT c.user_emob_id,c.user_emob_id) AS user_num,
+			(
+				SELECT COUNT(cc.crazy_sales_user_id) FROM crazy_sales_user cc WHERE cc.community_id=#{communityId,jdbcType=INTEGER} AND cc.use_time BETWEEN #{todayBegin,jdbcType=INTEGER} AND #{todayEnd,jdbcType=INTEGER}
+			) AS use_num
+		FROM crazy_sales_user c
+		WHERE
+			c.community_id=#{communityId,jdbcType=INTEGER}
+			AND c.create_time BETWEEN #{todayBegin,jdbcType=INTEGER} AND #{todayEnd,jdbcType=INTEGER}
+
+		UNION ALL
+
+		SELECT
+			COUNT(c.crazy_sales_user_id) AS buy_num,
+			COUNT(DISTINCT c.user_emob_id,c.user_emob_id) AS user_num,
+			(
+				SELECT COUNT(cc.crazy_sales_user_id) FROM crazy_sales_user cc WHERE cc.community_id=#{communityId,jdbcType=INTEGER} AND cc.use_time BETWEEN #{thisWeekBegin,jdbcType=INTEGER} AND #{thisWeekEnd,jdbcType=INTEGER}
+			) AS use_num
+		FROM crazy_sales_user c
+		WHERE
+			c.community_id=#{communityId,jdbcType=INTEGER}
+			AND c.create_time BETWEEN #{thisWeekBegin,jdbcType=INTEGER} AND #{thisWeekEnd,jdbcType=INTEGER}
+
+		UNION ALL
+
+		SELECT
+			COUNT(c.crazy_sales_user_id) AS buy_num,
+			COUNT(DISTINCT c.user_emob_id,c.user_emob_id) AS user_num,
+			(
+				SELECT COUNT(cc.crazy_sales_user_id) FROM crazy_sales_user cc WHERE cc.community_id=#{communityId,jdbcType=INTEGER} AND cc.use_time BETWEEN #{thisMonthBegin,jdbcType=INTEGER} AND #{thisMonthEnd,jdbcType=INTEGER}
+			) AS use_num
+		FROM crazy_sales_user c
+		WHERE
+			c.community_id=#{communityId,jdbcType=INTEGER}
+			AND c.create_time BETWEEN #{thisMonthBegin,jdbcType=INTEGER} AND #{thisMonthEnd,jdbcType=INTEGER}
+	</select>
+	<select id="getCrazySales" parameterType="com.xj.stat.bean.parameter.nearby.CrazySales" resultMap="CrazySalesImg">
+		SELECT
+		c. STATUS,
+		c.total,
+		c.emob_id,
+		c.per_limit,
+		c.remain,
+		c.icon,
+		ci.img_url,
+		c.crazy_sales_id,
+		c.create_time,
+		c.end_time,
+		c.title,
+		c.descr
+		FROM
+		crazy_sales c LEFT JOIN crazy_sales_img ci ON c.crazy_sales_id=ci.crazy_sales_id
+		WHERE c.crazy_sales_id=#{crazySalesId}
+	</select>
+	<update id="delectCrazySales" parameterType="com.xj.stat.bean.parameter.nearby.CrazySales">
+		update crazy_sales set status='delete' where crazy_sales_id=#{crazySalesId}
+	</update>
+	<update id="upCrazySales" parameterType="com.xj.stat.bean.resource.nearby.CrazySalesImg">
+		update crazy_sales
+		<set>
+			<if test="total != null">
+				total = #{total},
+			</if>
+			<if test="perLimit != null">
+				per_limit = #{perLimit},
+			</if>
+			<if test="title != null">
+				title = #{title},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime},
+			</if>
+			<if test="endTime != null">
+				end_time = #{endTime},
+			</if>
+			<if test="descr != null">
+				descr = #{descr},
+			</if>
+			<if test="status != null">
+				status = #{status},
+			</if>
+			<if test="remain != null">
+				remain = #{remain},
+			</if>
+			<if test="icon != null">
+				icon = #{icon},
+			</if>
+		</set>
+		where crazy_sales_id = #{crazySalesId}
+	</update>
+	<update id="upImgCrazySales" parameterType="com.xj.stat.bean.resource.nearby.CrazySalesImg">
+		update crazy_sales_img set img_url=#{imgUrl} where crazy_sales_id = #{crazySalesId}
+	</update>
+</mapper>
